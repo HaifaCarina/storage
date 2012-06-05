@@ -31,25 +31,25 @@
         // Populate the database 
         //
         function populateDB(tx) {
-            tx.executeSql('DROP TABLE IF EXISTS DEMO');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data, image)');
-            tx.executeSql('INSERT INTO DEMO (id, data, image) VALUES (3, "Third row", "image3")');
-            tx.executeSql('INSERT INTO DEMO (id, data, image) VALUES (4, "Fourth row", "image4")');
+            tx.executeSql('DROP TABLE IF EXISTS CARD_CATEGORY');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS CARD_CATEGORY (cat_id unique, cat_name, cat_img, cat_slug)');
+            tx.executeSql('INSERT INTO CARD_CATEGORY (cat_id, cat_name, cat_img, cat_slug) VALUES (3, "Third row", "cat_img3","third-row")');
+            tx.executeSql('INSERT INTO CARD_CATEGORY (cat_id, cat_name, cat_img, cat_slug) VALUES (4, "Fourth row", "cat_img4","fourth-row")');
         }
         
         // Query the database
         //
         function queryDB(tx) {
-            tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+            tx.executeSql('SELECT * FROM CARD_CATEGORY', [], querySuccess, errorCB);
         }
         
         // Query the success callback
         //
         function querySuccess(tx, results) {
             var len = results.rows.length;
-            console.log("DEMO table: " + len + " rows found.");
+            console.log("CARD_CATEGORY table: " + len + " rows found.");
             for (var i=0; i<len; i++){
-                console.log("Row = " + i + " ID = " + results.rows.item(i).id + " Data =  " + results.rows.item(i).data + " Image =  " + results.rows.item(i).image);
+                console.log("Row = " + i + " cat_id = " + results.rows.item(i).cat_id + " cat_name =  " + results.rows.item(i).cat_name + " cat_img =  " + results.rows.item(i).cat_img+ " cat_slug =  " + results.rows.item(i).cat_slug);
             }
         }
         
@@ -62,19 +62,18 @@
         // Transaction success callback
         //
         function successCB() {
-            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+            var db = window.openDatabase("Flashcard", "1.0", "Flashcard Database", 800000);
             db.transaction(queryDB, errorCB);
             console.log("successfull cb");
             
         }
-            
             
         
         // PhoneGap is ready
         //
         function onDeviceReady() {
             
-            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 800000);
+            var db = window.openDatabase("Flashcard", "1.0", "Flashcard Database", 800000);
             db.transaction(populateDB, errorCB, successCB);
             
             var image_html = "";
@@ -85,7 +84,7 @@
                      
                      db.transaction(function(tx){
                                     
-                                    tx.executeSql('INSERT INTO DEMO (id, data, image) VALUES (5, "Fifth row", "'+val.base64+'")');
+                                    tx.executeSql('INSERT INTO CARD_CATEGORY (cat_id, cat_name, cat_img, cat_slug) VALUES (5, "Fifth row", "'+val.base64+'","fifth-row")');
                                     });
                      });
                       db.transaction(myQuerySuccess, errorCB, successCB);

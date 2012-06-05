@@ -1008,10 +1008,10 @@
 		<string>PrimaryDocumentVisibleCharacterRange</string>
 		<string>HideAllIssues</string>
 		<string>PrimaryDocumentSelectedCharacterRange</string>
-		<real>360566622.21302003</real>
-		<string>{798, 1405}</string>
+		<real>360568308.69299102</real>
+		<string>{2321, 1258}</string>
 		<false/>
-		<string>{1606, 0}</string>
+		<string>{3746, 0}</string>
 		<string>Xcode.IDEKit.EditorDocument.SourceCode</string>
 		<dict>
 			<key>$class</key>
@@ -2770,9 +2770,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>360566622.21199298</real>
-		<string>{798, 1405}</string>
-		<string>{1606, 0}</string>
+		<real>360568308.69202602</real>
+		<string>{2321, 1258}</string>
+		<string>{3746, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -3173,7 +3173,7 @@
 				<integer>298</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>360566521.05208099</real>
+			<real>360568304.62648797</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -3184,7 +3184,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 1:22 PM</string>
+		<string>Today at 1:51 PM</string>
 		<integer>106</integer>
 		<dict>
 			<key>$class</key>
