@@ -32,9 +32,9 @@
         //
         function populateDB(tx) {
             tx.executeSql('DROP TABLE IF EXISTS DEMO');
-            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data)');
-            tx.executeSql('INSERT INTO DEMO (id, data) VALUES (3, "Third row")');
-            tx.executeSql('INSERT INTO DEMO (id, data) VALUES (4, "Fourth row")');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data, image)');
+            tx.executeSql('INSERT INTO DEMO (id, data, image) VALUES (3, "Third row", "image3")');
+            tx.executeSql('INSERT INTO DEMO (id, data, image) VALUES (4, "Fourth row", "image4")');
         }
         
         // Query the database
@@ -49,7 +49,7 @@
             var len = results.rows.length;
             console.log("DEMO table: " + len + " rows found.");
             for (var i=0; i<len; i++){
-                console.log("Row = " + i + " ID = " + results.rows.item(i).id + " Data =  " + results.rows.item(i).data);
+                console.log("Row = " + i + " ID = " + results.rows.item(i).id + " Data =  " + results.rows.item(i).data + " Image =  " + results.rows.item(i).image);
             }
         }
         
@@ -67,30 +67,33 @@
             console.log("successfull cb");
             
         }
+            
+            
         
         // PhoneGap is ready
         //
         function onDeviceReady() {
             
-            $("test content okies").appendTo('div.content-question');
-            
-           
+            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 800000);
+            db.transaction(populateDB, errorCB, successCB);
             
             var image_html = "";
             $.getJSON('http://nmgdev.com/flashcard/categories.php', function(data) {
-                      $.each(data.categories, function(key, val) {
-                             console.log(val.cat_name);
-                             image_html += "<img src='data:image/png;base64,"+ val.base64+"' />";
-                             //console.log(val.base64);
-                             });
+              $.each(data.categories, function(key, val) {
+                     console.log(val.cat_name);
+                     image_html += "<img src='data:image/png;base64,"+ val.base64+"' />";
+                     
+                     db.transaction(function(tx){
+                                    
+                                    tx.executeSql('INSERT INTO DEMO (id, data, image) VALUES (5, "Fifth row", "'+val.base64+'")');
+                                    });
+                     });
+                      db.transaction(myQuerySuccess, errorCB, successCB);
+              $("div.content-question").html(image_html);
                       
-                      $("div.content-question").html("<p>:)"+image_html+"</p>");
-                      
-                      });
+            });
             
             
-            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
-            db.transaction(populateDB, errorCB, successCB);
             
         }
     
