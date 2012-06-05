@@ -33,8 +33,8 @@
         function populateDB(tx) {
             tx.executeSql('DROP TABLE IF EXISTS CARD_CATEGORY');
             tx.executeSql('CREATE TABLE IF NOT EXISTS CARD_CATEGORY (cat_id unique, cat_name, cat_img, cat_slug)');
-            tx.executeSql('INSERT INTO CARD_CATEGORY (cat_id, cat_name, cat_img, cat_slug) VALUES (3, "Third row", "cat_img3","third-row")');
-            tx.executeSql('INSERT INTO CARD_CATEGORY (cat_id, cat_name, cat_img, cat_slug) VALUES (4, "Fourth row", "cat_img4","fourth-row")');
+            //tx.executeSql('INSERT INTO CARD_CATEGORY (cat_id, cat_name, cat_img, cat_slug) VALUES (3, "Third row", "cat_img3","third-row")');
+            //tx.executeSql('INSERT INTO CARD_CATEGORY (cat_id, cat_name, cat_img, cat_slug) VALUES (4, "Fourth row", "cat_img4","fourth-row")');
         }
         
         // Query the database
@@ -48,6 +48,7 @@
         function querySuccess(tx, results) {
             var len = results.rows.length;
             console.log("CARD_CATEGORY table: " + len + " rows found.");
+            
             for (var i=0; i<len; i++){
                 console.log("Row = " + i + " cat_id = " + results.rows.item(i).cat_id + " cat_name =  " + results.rows.item(i).cat_name + " cat_img =  " + results.rows.item(i).cat_img+ " cat_slug =  " + results.rows.item(i).cat_slug);
             }
@@ -84,10 +85,10 @@
                      
                      db.transaction(function(tx){
                                     
-                                    tx.executeSql('INSERT INTO CARD_CATEGORY (cat_id, cat_name, cat_img, cat_slug) VALUES (5, "Fifth row", "'+val.base64+'","fifth-row")');
+                                    tx.executeSql('INSERT INTO CARD_CATEGORY (cat_id, cat_name, cat_img, cat_slug) VALUES ('+val.cat_id+', "'+val.cat_name+'", "'+val.base64+'","'+val.cat_slug+'")');
                                     });
                      });
-                      db.transaction(myQuerySuccess, errorCB, successCB);
+                      db.transaction(myQuerySuccess, errorCB, successCB); //this is just to check values of the database
               $("div.content-question").html(image_html);
                       
             });
