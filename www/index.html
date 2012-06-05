@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title></title>
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+	<meta charset="utf-8">
+
+
+	<!-- iPad/iPhone specific css below, add after your main css >
+	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
+	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
+	-->
+	<!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
+	<script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    
+        <script type="text/javascript">
+
+        
+            function myQuerySuccess(tx){
+                console.log("querySuccess");
+            }
+            function myQueryFail(tx){
+                console.log("queryFail");
+            }
+        // Wait for PhoneGap to load
+        //
+        document.addEventListener("deviceready", onDeviceReady, false);
+        
+        // Populate the database 
+        //
+        function populateDB(tx) {
+            tx.executeSql('DROP TABLE IF EXISTS DEMO');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data)');
+            tx.executeSql('INSERT INTO DEMO (id, data) VALUES (3, "Third row")');
+            tx.executeSql('INSERT INTO DEMO (id, data) VALUES (4, "Fourth row")');
+        }
+        
+        // Query the database
+        //
+        function queryDB(tx) {
+            tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+        }
+        
+        // Query the success callback
+        //
+        function querySuccess(tx, results) {
+            var len = results.rows.length;
+            console.log("DEMO table: " + len + " rows found.");
+            for (var i=0; i<len; i++){
+                console.log("Row = " + i + " ID = " + results.rows.item(i).id + " Data =  " + results.rows.item(i).data);
+            }
+        }
+        
+        // Transaction error callback
+        //
+        function errorCB(err) {
+            console.log("Error processing SQL: "+err.code);
+        }
+        
+        // Transaction success callback
+        //
+        function successCB() {
+            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+            db.transaction(queryDB, errorCB);
+            console.log("successfull cb");
+            
+        }
+        
+        // PhoneGap is ready
+        //
+        function onDeviceReady() {
+            
+            $("test content okies").appendTo('div.content-question');
+            
+           
+            
+            var image_html = "";
+            $.getJSON('http://nmgdev.com/flashcard/categories.php', function(data) {
+                      $.each(data.categories, function(key, val) {
+                             console.log(val.cat_name);
+                             image_html += "<img src='data:image/png;base64,"+ val.base64+"' />";
+                             //console.log(val.base64);
+                             });
+                      
+                      $("div.content-question").html("<p>:)"+image_html+"</p>");
+                      
+                      });
+            
+            
+            var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+            db.transaction(populateDB, errorCB, successCB);
+            
+        }
+    
+    </script>
+  </head>
+  <body onload="onBodyLoad()">
+      <h1>Example</h1>
+      <p>SQLTransaction</p>
+      <div class="content-question"></div>
+  </body>
+</html>
